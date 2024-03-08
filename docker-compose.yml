@@ -1,0 +1,29 @@
+# inisialisasi docker compose version berdasarkan acuan docker engine version
+version: '3.8'
+
+# mendefinisikan services
+services:
+  # buat service bernama item app yang menggunakan image dari ghcr.io/hildanku
+  item-app:
+    image: ghcr.io/hildanku/item-app:v1
+  # buka port 80 agar nantinya aplikasi berjalan pada port 80
+    ports:
+           - 80:8080
+  # menentapkan nantinya ketika container running,
+  # aplikasi nanti akan memastikan untuk running service item-db
+  # sebelum service item-app dirunning
+    depends_on: 
+            - item-db
+  # ketika aplikasi terjadi crash, maka aplikasi kita akan melakukan restart
+    restart: always
+  
+  # buat service bernama item-db menggunakan image dari dockerhub sendiri
+  item-db:
+     image: mongo:3
+     
+  # menggunakan volume app-db yang nantinya digunakan untuk menyimpan data database pada directory data/db
+      volumes: 
+          - app-db:/data/db 
+# membuat volume app-db
+volumes:
+  app-db:
