@@ -19,10 +19,10 @@ services:
   
   # buat service bernama item-db menggunakan image dari dockerhub sendiri
   item-db:
-     image: mongo:3
+    image: mongo:3
      
   # menggunakan volume app-db yang nantinya digunakan untuk menyimpan data database pada directory data/db
-      volumes: 
+    volumes: 
           - app-db:/data/db 
 # membuat volume app-db
 volumes:
