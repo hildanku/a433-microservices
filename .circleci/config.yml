@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: Login to GHCR
-          command: echo $password | docker login -u hildanku --password-stdin ghcr.io
+          command: echo $PASSWORD | docker login -u hildanku --password-stdin ghcr.io
       - run:
           name: Build Docker Image
           command: docker build --tag ghcr.io/hildanku/karsajobs-backend:latest-circleci .
@@ -26,11 +26,12 @@ jobs:
           name: Push Docker Image
           command: docker push ghcr.io/hildanku/karsajobs-backend:latest-circleci
 # Orchestrate our job run sequence
-    workflows:
-    # build_and_test:
-      jobs:
-        - lint-dockerfile
-        - build-push-image-karsajobs-backend:
-            name: build-push-image-karsajobs-backend
-            requires:
-              - lint-dockerfile
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - lint-dockerfile
+      - build-push-image-karsajobs-backend:
+          name: build-push-image-karsajobs-backend
+          requires:
+            - lint-dockerfile
