@@ -11,6 +11,16 @@ jobs:
       - run:
           name: Lint Dockerfile
           command: docker run --rm -i hadolint/hadolint < Dockerfile
+  # buat job untuk running unit test
+  test-app:
+    docker: 
+      - image: cimg/go:1.22.1-node
+    steps: 
+      - checkout
+      - run: 
+          name: run unit test
+          command: go test -v -short --count=1 $(go list ./...)
+      
   # buat job untuk build image docker
   build-push-image-karsajobs-backend:
     docker:
