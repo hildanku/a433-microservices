@@ -43,7 +43,11 @@ workflows:
   build_and_test:
     jobs:
       - lint-dockerfile
+      - test-app:
+          name: test-app
+          requires:
+            - lint-dockerfile
       - build-push-image-karsajobs-backend:
           name: build-push-image-karsajobs-backend
           requires:
-            - lint-dockerfile
+            - test-app
