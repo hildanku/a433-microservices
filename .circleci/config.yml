@@ -11,7 +11,7 @@ jobs:
           name: Lint Dockerfile
           command: docker run --rm -i hadolint/hadolint < Dockerfile
   # buat job untuk build image docker
-  build-image-karsajobs-backend:
+  build-push-image-karsajobs-backend:
     docker:
       - image: cimg/base:2023.03
     steps:
@@ -26,10 +26,11 @@ jobs:
           name: Push Docker Image
           command: docker push ghcr.io/hildanku/karsajobs-backend:latest-circleci
 # Orchestrate our job run sequence
-workflows:
-  # build_and_test:
-    jobs:
-      - lint-dockerfile
-      - build-image-karsajobs-backend:
-          requires:
-            - lint-dockerfile
+    workflows:
+    # build_and_test:
+      jobs:
+        - lint-dockerfile
+        - build-push-image-karsajobs-backend:
+            name: build-push-image-karsajobs-backend
+            requires:
+              - lint-dockerfile
