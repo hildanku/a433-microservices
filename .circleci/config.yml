@@ -1,0 +1,39 @@
+version: 2.1
+
+jobs:
+  # buat job lint dockerfile
+  lint-dockerfile:
+    docker:
+      - image: cimg/base:2023.03
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Lint Dockerfile
+          command: docker run --rm -i hadolint/hadolint < Dockerfile
+  # buat job untuk build image docker
+  build-push-image-karsajobs-ui-frontend:
+    docker:
+      - image: cimg/base:2023.03
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Login to GHCR
+          command: echo $PASSWORD | docker login -u hildanku --password-stdin ghcr.io
+      - run:
+          name: Build Docker Image
+          command: docker build --tag ghcr.io/hildanku/karsajobs-ui-frontend:latest-circleci .
+      - run:
+          name: Push Docker Image
+          command: docker push ghcr.io/hildanku/karsajobs-ui-frontend:latest-circleci
+# Orchestrate our job run sequence
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - lint-dockerfile
+      - build-push-image-karsajobs-ui-frontend:
+          name: build-push-image-karsajobs-ui-frontend
+          requires:
+            - lint-dockerfile
