@@ -17,9 +17,10 @@ jobs:
       - image: cimg/base:2023.03
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Login to GHCR
-          command: echo ${PASSWORD} | docker login -u hildanku --password-stdin ghcr.io
+          command: echo $PASSWORD | docker login -u hildanku --password-stdin ghcr.io
       - run:
           name: Build Docker Image
           command: docker build --tag ghcr.io/hildanku/karsajobs-backend:latest-circleci .
