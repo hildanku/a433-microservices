@@ -1,43 +1,43 @@
-version: 2.1
+version: 2.1 # menggunakan versi circleci 2.1
 
 jobs:
   # buat job lint dockerfile
-  lint-dockerfile:
+  lint-dockerfile: 
     docker:
-      - image: cimg/base:2023.03
+      - image: cimg/base:2023.03 # menggunakan cimg/base dari dockerhub
     steps:
-      - checkout
-      - setup_remote_docker
-      - run:
+      - checkout # checkout code
+      - setup_remote_docker # setup docker agar terkoneksi ke server, karena jika tidak ada ini maka akan terjadi error Daemon not running.
+      - run: # menjalankan perintah
           name: Lint Dockerfile
-          command: docker run --rm -i hadolint/hadolint < Dockerfile
+          command: docker run --rm -i hadolint/hadolint < Dockerfile  #
   # buat job untuk running unit test
   test-app:
     docker: 
-      - image: cimg/go:1.22.1-node
+      - image: cimg/go:1.22.1-node # menggunakan cimg/go dari dockerhub
     steps: 
-      - checkout
-      - run: 
+      - checkout # checkout code
+      - run: # menjalankan perintah
           name: run unit test
           command: go test -v -short --count=1 $(go list ./...)
       
   # buat job untuk build image docker
   build-push-image-karsajobs-backend:
     docker:
-      - image: cimg/base:2023.03
+      - image: cimg/base:2023.03 # menggunakan cimg/base dari dockerhub
     steps:
-      - checkout
-      - setup_remote_docker
+      - checkout # checkout code
+      - setup_remote_docker # setup docker agar terkoneksi ke server
       - run:
           name: Login to GHCR
-          command: echo $PASSWORD | docker login -u hildanku --password-stdin ghcr.io
+          command: echo $PASSWORD | docker login -u hildanku --password-stdin ghcr.io #login ke githubpackages/github container registry
       - run:
           name: Build Docker Image
-          command: docker build --tag ghcr.io/hildanku/karsajobs-backend:latest-circleci .
+          command: docker build --tag ghcr.io/hildanku/karsajobs-backend:latest-circleci . # build image docker dari dockerfile
       - run:
           name: Push Docker Image
-          command: docker push ghcr.io/hildanku/karsajobs-backend:latest-circleci
-# Orchestrate our job run sequence
+          command: docker push ghcr.io/hildanku/karsajobs-backend:latest-circleci # oush docker image yang dibuild ke github packages
+# menjalankan jobs secara sequence
 workflows:
   version: 2
   build_and_test:
