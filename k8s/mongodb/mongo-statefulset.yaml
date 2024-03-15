@@ -1,42 +1,42 @@
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
+apiVersion: apps/v1 # menggunakan apiversi apps/v1
+kind: StatefulSet # menggunakan object statefulset
+metadata: # menentukan metadata
   name: mongo-statefulset
 spec:
-  serviceName: mongo
-  selector:
+  serviceName: mongo # menentukan service
+  selector: # menentukan label
     matchLabels:
       app: mongo
-  replicas: 1
-  template:
+  replicas: 1 # membuat 1 replika
+  template: # menentukan template
     metadata:
       labels:
         app: mongo
     spec:
-      volumes:
+      volumes: # mengambil volume berdasarkan volume yang sebleumnya dibuat
         - name: mongo-credentials
           secret:
-            secretName: mongo-secret
+            secretName: mongo-secret # ambil dari mongo-secret.yaml
         - name: data
           persistentVolumeClaim:
-            claimName: mongo-pv-claim
+            claimName: mongo-pv-claim # ambil dari mongo-pv-pvc.yaml
         - name: config
           configMap:
-            name: mongo-config
+            name: mongo-config # ambil dari mongo-config.yaml
       containers:
-      - name: mongo-db
-        image: mongo:3
-        ports:
+      - name: mongo-db # menentukan nama container
+        image: mongo:3 # menggunakan image mongo versi 3
+        ports: # expose port
           - containerPort: 27017
             name: default-port
-        volumeMounts:
+        volumeMounts: # mounting volume
           - name: config
             mountPath: /config
           - name: mongo-credentials
             mountPath: /etc/mongo-credentials
           - name: data
             mountPath: /data/db
-        env:
+        env: # mengambil environment variables
           - name: MONGO_INITDB_ROOT_USERNAME_FILE
             value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
           - name: MONGO_INITDB_ROOT_PASSWORD_FILE

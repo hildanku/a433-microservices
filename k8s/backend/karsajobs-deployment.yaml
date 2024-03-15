@@ -1,13 +1,13 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: karsajobs-deployment
+apiVersion: apps/v1 # menggunakan api app/v1
+kind: Deployment # menggunakan object deployment
+metadata: 
+  name: karsajobs-deployment # memberi nama pod
 spec:
-  replicas: 1
+  replicas: 1 # menentukan replica
   selector:
-    matchLabels:
+    matchLabels: # menentukan label
       app: karsajobs
-      type: backend
+      type: backend 
   template:
     metadata:
       labels:
@@ -15,11 +15,11 @@ spec:
         type: backend
     spec:
       containers:
-      - name: karsajobs-backend
-        image: ghcr.io/hildanku/karsajobs:latest
+      - name: karsajobs-backend # memberi nama container
+        image: ghcr.io/hildanku/karsajobs:latest # menentukan image
         ports:
-        - containerPort: 8080
-        env:
+        - containerPort: 8080 # expose port
+        env: # menentukan environment
           - name: APP_PORT
             value: "8080"
           - name: MONGO_HOST

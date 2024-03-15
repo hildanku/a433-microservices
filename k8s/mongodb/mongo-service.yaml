@@ -1,10 +1,10 @@
-apiVersion: v1
-kind: Service
+apiVersion: v1 # menggunakan api v1
+kind: Service # menggunakan object service
 metadata:
-  name: mongo-service
-spec:
-  selector:
+  name: mongo-service # memberi nama service
+spec: 
+  selector: # menentukan label
     app: mongo
-  ports:
+  ports: # expose port
   - port: 27017
     targetPort: 27017

@@ -1,12 +1,12 @@
-apiVersion: v1
-kind: Service
+apiVersion: v1 # menggunakan api v1
+kind: Service # menggunakan object service
 metadata:
-  name: karsajobs-service
+  name: karsajobs-service # memberi nama service
 spec:
-  type: NodePort
-  selector:
+  type: NodePort # menentukan type cara akses service di node
+  selector: # menentukan label
     app: karsajobs
     type: backend
-  ports:
+  ports: # expose port
   - port: 8080
     targetPort: 8080

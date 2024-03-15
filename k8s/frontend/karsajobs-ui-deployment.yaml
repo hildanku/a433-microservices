@@ -1,21 +1,21 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1 # menggunakan apiversi apps/v1
+kind: Deployment # menggunakan object deployment
 metadata:
-  name: karsajobs-ui-deployment
+  name: karsajobs-ui-deployment # menentukan nama
 spec:
-  replicas: 1
-  selector:
+  replicas: 1 # membuat 1 replika deployment
+  selector: # menentukan label
     matchLabels:
       app: karsajobs
       type: frontend
-  template:
+  template: # menentukan template
     metadata:
       labels:
         app: karsajobs
         type: frontend
     spec:
-      containers:
-      - name: karsajobs-ui
-        image: ghcr.io/hildanku/karsajobs-ui:latest
-        ports:
+      containers: # menentukan container
+      - name: karsajobs-ui # menentukan nama container
+        image: ghcr.io/hildanku/karsajobs-ui:latest # menentukan image
+        ports: # expose port
         - containerPort: 8000
