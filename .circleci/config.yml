@@ -7,6 +7,7 @@ jobs:
       - image: cimg/base:2023.03
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Lint Dockerfile
           command: docker run --rm -i hadolint/hadolint < Dockerfile
