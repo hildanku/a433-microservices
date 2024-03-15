@@ -1,33 +1,33 @@
-version: 2.1
+version: 2.1 # menggunakan circleci vrsi 2.1
 
 jobs:
   # buat job lint dockerfile
   lint-dockerfile:
     docker:
-      - image: cimg/base:2023.03
+      - image: cimg/base:2023.03 # ambil image cimg/base dari dockerhub
     steps:
-      - checkout
-      - setup_remote_docker
+      - checkout # checkout code
+      - setup_remote_docker # setup docker
       - run:
           name: Lint Dockerfile
-          command: docker run --rm -i hadolint/hadolint < Dockerfile
+          command: docker run --rm -i hadolint/hadolint < Dockerfile # run hadolint
   # buat job untuk build image docker
   build-push-image-karsajobs-ui-frontend:
     docker:
-      - image: cimg/base:2023.03
+      - image: cimg/base:2023.03  # ambil image cimg/base dari dockerhub
     steps:
-      - checkout
-      - setup_remote_docker
+      - checkout # checkout code
+      - setup_remote_docker # setup docker
       - run:
           name: Login to GHCR
-          command: echo $PASSWORD | docker login -u hildanku --password-stdin ghcr.io
+          command: echo $PASSWORD | docker login -u hildanku --password-stdin ghcr.io # login ke ghcr
       - run:
           name: Build Docker Image
-          command: docker build --tag ghcr.io/hildanku/karsajobs-ui-frontend:latest-circleci .
+          command: docker build --tag ghcr.io/hildanku/karsajobs-ui-frontend:latest-circleci . # build image
       - run:
           name: Push Docker Image
-          command: docker push ghcr.io/hildanku/karsajobs-ui-frontend:latest-circleci
-# Orchestrate our job run sequence
+          command: docker push ghcr.io/hildanku/karsajobs-ui-frontend:latest-circleci # push image
+# menjalankan job secara sequence
 workflows:
   version: 2
   build_and_test:
