@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:lts-alpine3.19
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --production --unsafe-perm
