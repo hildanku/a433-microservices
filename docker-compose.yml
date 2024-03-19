@@ -1,19 +1,18 @@
-version: '3'
-services:
-  rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    ports:
+version: '3' # menggunakan docker-compose versi 3
+services: # mendefinisikan service apa yang ingin dideploy
+  rabbitmq: # mendefinisikan service rabbitmq
+    image: rabbitmq:3.8-management-alpine # menggunakan image rabbitmq:3.8-management-alpine yang ada di docker hub
+    ports: # mengekspos port
       - "5672:5672"
-    environment:
+    environment: # mengkonfigurasi environment variabel
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-  
-  order-service:
-    build: .
-    ports:
-      - "3000:3000"
-    depends_on:
+  order-service: # mendefinisikan service order-service
+    build: . # mengekspos folder
+    ports: # mengekspos port
+      - "3000:3000" # mengekspos port 3000
+    depends_on: # memastikan sebelum running container ini, service rabbitmq harus running terlebih dahulu
       - rabbitmq
-    environment:
+    environment: # mengkonfigurasi environment variabel
       AMQP_URL: "amqp://guest:guest@localhost:5672"
       PORT: 3000
