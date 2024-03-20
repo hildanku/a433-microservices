@@ -12,9 +12,10 @@ var channel, connection;
 connectToQueue();
 
 async function connectToQueue() {
+    // mengeluarkan connection ke luar blok trycatch
+    connection = await amqp.connect(amqpServer);
+    channel = await connection.createChannel();
     try {
-        connection = await amqp.connect(amqpServer);
-        channel = await connection.createChannel();
         await channel.assertQueue("order");
         channel.consume("order", data => {
             console.log(`Order received: ${Buffer.from(data.content)}`);
